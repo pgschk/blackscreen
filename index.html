@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Screen</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const root = document.documentElement;
+
+    async function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        await root.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener("dblclick", () => {
+      toggleFullscreen().catch(() => {
+        // Ignore fullscreen errors (e.g., browser policy restrictions).
+      });
+    });
+  </script>
+</body>
+</html>
