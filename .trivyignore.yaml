@@ -1,0 +1,65 @@
+# Accepted risks: findings Trivy may hide in CI until expired_at.
+# Not for "not affected" claims; those go in vex/openvex.json.
+# Each entry is limited to the installed package version, so it stops
+# applying once the base image updates the package.
+#
+# 2026-11-20: fixed in Alpine, but nginxinc/nginx-unprivileged:1.31.7-alpine
+# (2026-10-19) predates the fixes. Waiting for its 1.31.9 rebuild.
+vulnerabilities:
+  - id: CVE-2026-111497
+    purls:
+      - pkg:apk/alpine/brotli-libs@1.2.0-r1
+    statement: CRITICAL, brotli-libs, fixed in 1.2.1-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-107891
+    purls:
+      - pkg:apk/alpine/musl@1.2.6-r2
+      - pkg:apk/alpine/musl-utils@1.2.6-r2
+    statement: HIGH, musl, musl-utils, fixed in 1.2.6-r3; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-113351
+    purls:
+      - pkg:apk/alpine/libexpat@2.9.0-r0
+    statement: HIGH, libexpat, fixed in 2.10.0-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-115506
+    purls:
+      - pkg:apk/alpine/libexpat@2.9.0-r0
+    statement: HIGH, libexpat, fixed in 2.10.0-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-117610
+    purls:
+      - pkg:apk/alpine/libexpat@2.9.0-r0
+    statement: HIGH, libexpat, fixed in 2.10.0-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-118370
+    purls:
+      - pkg:apk/alpine/libexpat@2.9.0-r0
+    statement: HIGH, libexpat, fixed in 2.10.0-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-125350
+    purls:
+      - pkg:apk/alpine/libxslt@1.1.43-r3
+    statement: HIGH, libxslt, fixed in 1.1.43-r4; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-85091
+    purls:
+      - pkg:apk/alpine/zlib@1.3.2-r0
+    statement: HIGH, zlib, fixed in 1.3.2-r1; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-87636
+    purls:
+      - pkg:apk/alpine/libxslt@1.1.43-r3
+    statement: HIGH, libxslt, fixed in 1.1.43-r4; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-92392
+    purls:
+      - pkg:apk/alpine/curl@8.22.0-r0
+      - pkg:apk/alpine/libcurl@8.22.0-r0
+    statement: HIGH, curl, libcurl, fixed in 8.23.0-r0; waiting for the base image rebuild
+    expired_at: 2026-12-04
+  - id: CVE-2026-9947
+    purls:
+      - pkg:apk/alpine/libxslt@1.1.43-r3
+    statement: HIGH, libxslt, fixed in 1.1.43-r4; waiting for the base image rebuild
+    expired_at: 2026-12-04

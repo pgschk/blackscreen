@@ -1,0 +1,27 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://github.com/pgschk/blackscreen/blob/main/vex/openvex.json",
+  "author": "pgschk",
+  "timestamp": "2026-11-20T00:00:00Z",
+  "version": 1,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2026-123007"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/blackscreen?repository_url=ghcr.io%2Fpgschk%2Fblackscreen",
+          "subcomponents": [
+            {
+              "@id": "pkg:apk/alpine/nginx@1.31.7-r1"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "The flaw is in nginx's HTTP/2 code. The image's nginx config only has 'listen 8080;' without http2, so the HTTP/2 code is never used. CI fails the build if 'http2' appears in /etc/nginx."
+    }
+  ]
+}
