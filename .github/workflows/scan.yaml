@@ -1,0 +1,63 @@
+name: scan
+
+# Rescans the published images (no rebuild) so CVEs found after publishing
+# show up, as a failed run. Uses vex/openvex.json from main, so a new VEX
+# statement applies to old images without republishing them.
+on:
+  schedule:
+    - cron: '0 4 * * 1' # weekly, Monday 04:00 UTC
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/pgschk/blackscreen
+  # renovate: datasource=github-releases depName=aquasecurity/trivy
+  TRIVY_VERSION: v0.76.2
+
+jobs:
+  targets:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      tags: ${{ steps.tags.outputs.tags }}
+    steps:
+      # :main and the newest release
+      - name: Tags to scan
+        id: tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          release=$(gh release view --repo "$REPO" --json tagName --jq .tagName 2>/dev/null || true)
+          echo "tags=$(jq -cn --arg r "$release" '["main"] + (if $r == "" then [] else [$r] end)')" >> "$GITHUB_OUTPUT"
+
+  scan:
+    needs: targets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: ${{ fromJSON(needs.targets.outputs.tags) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          version: ${{ env.TRIVY_VERSION }}
+          cache: true
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: Scan with Trivy
+        env:
+          REF: ${{ env.IMAGE }}:${{ matrix.tag }}
+        run: >-
+          trivy image --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed
+          --vex vex/openvex.json --ignorefile .trivyignore.yaml --show-suppressed "$REF"

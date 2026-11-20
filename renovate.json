@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Updates at any time (fast preset); GitHub Actions in one PR; nothing automerges unless a rule here says so",
+  "extends": [
+    "github>pgschk/renovate-config",
+    "github>pgschk/renovate-config:fast"
+  ],
+  "packageRules": [
+    {
+      "description": "All GitHub Actions updates in one PR",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "GitHub Actions"
+    }
+  ]
+}
