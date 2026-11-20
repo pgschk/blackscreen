@@ -63,3 +63,8 @@ vulnerabilities:
       - pkg:apk/alpine/libxslt@1.1.43-r3
     statement: HIGH, libxslt, fixed in 1.1.43-r4; waiting for the base image rebuild
     expired_at: 2026-12-04
+  - id: CVE-2026-86144
+    purls:
+      - pkg:apk/alpine/libxml2@2.13.9-r2
+    statement: HIGH, libxml2, fixed in 2.13.9-r3; waiting for the base image rebuild
+    expired_at: 2026-12-04
